@@ -35,9 +35,11 @@ function App() {
     ) {
       return alert('Birthday is invalidation');
     }
+    const newData = { key: dataLists.length, name: inputName, birthday: inputBirthday };
+    const newDataLists = [...dataLists, newData];
 
     alert('New list\nName : ' + inputName + '\nBirthday : ' + inputBirthday);
-    setDataLists([...dataLists, { key: dataLists.length, name: inputName, birthday: inputBirthday }]);
+    setDataLists(newDataLists);
     setInputBirthday('');
     setInputName('');
   };
