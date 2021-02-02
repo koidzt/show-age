@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
-function EditData({ dataLists, setDataLists, keyOfEditData, setKeyOfEditData, isShowEditData, setIsShowEditData }) {
-  const [inputEditName, setInputEditName] = useState(dataLists[keyOfEditData].name);
-  const [inputEditBirthday, setInputEditBirthday] = useState(dataLists[keyOfEditData].birthday);
+function EditData({ dataLists, setDataLists, keyOfEditData, isShowEditData, setIsShowEditData }) {
+  const Ind = dataLists.findIndex((list) => list.key === keyOfEditData);
+  const [editName, setEditName] = useState(dataLists[Ind].name);
+  const [editBirthday, setEditBirthday] = useState(dataLists[Ind].birthday);
 
   const handleChangeName = (event) => {
     const value = event.target.value;
     // console.log(value);
-    setInputEditName(value);
+    setEditName(value);
   };
 
   const handleChangeBirthday = (event) => {
     const value = event.target.value;
     // console.log(value);
-    setInputEditBirthday(value);
+    setEditBirthday(value);
   };
 
   const submitEdit = (event) => {
     event.preventDefault();
-    const targetData = [...dataLists];
-    const Ind = dataLists.findIndex((list) => list.key === keyOfEditData);
-    targetData[Ind].name = inputEditName;
-    targetData[Ind].birthday = inputEditBirthday;
+    const newDataLists = [...dataLists];
+    newDataLists[Ind].name = editName;
+    newDataLists[Ind].birthday = editBirthday;
 
-    setDataLists(targetData);
+    setDataLists(newDataLists);
     setIsShowEditData(!isShowEditData);
   };
 
@@ -37,7 +37,7 @@ function EditData({ dataLists, setDataLists, keyOfEditData, setKeyOfEditData, is
               <Form.Label>Name</Form.Label>
             </Col>
             <Col xs={8}>
-              <Form.Control type="text" value={inputEditName} onChange={handleChangeName} />
+              <Form.Control type="text" value={editName} onChange={handleChangeName} />
             </Col>
           </Row>
           <Row className="d-flex justify-content-evenly mt-2 mb-2">
@@ -45,7 +45,7 @@ function EditData({ dataLists, setDataLists, keyOfEditData, setKeyOfEditData, is
               <Form.Label>Birthday</Form.Label>
             </Col>
             <Col xs={8}>
-              <Form.Control type="date" value={inputEditBirthday} onChange={handleChangeBirthday} />
+              <Form.Control type="date" value={editBirthday} onChange={handleChangeBirthday} />
             </Col>
           </Row>
           <Row className="d-flex justify-content-evenly mt-2 mb-3">
