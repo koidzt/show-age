@@ -14,13 +14,13 @@ function App() {
 
   const handleChangeName = (event) => {
     const value = event.target.value;
-    console.log(value);
+    // console.log(value);
     setInputName(value);
   };
 
   const handleChangeBirthday = (event) => {
     const value = event.target.value;
-    console.log(value);
+    // console.log(value);
     setInputBirthday(value);
   };
 
