@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 
-function AgeCard({ dataLists, setDataLists, keyOfEditData, setKeyOfEditData, isShowEditData, setIsShowEditData }) {
+function AgeCard({ dataLists, setDataLists, setKeyOfEditData, isShowEditData, setIsShowEditData }) {
   const calAge = (birthday) => {
     const year = Number(birthday.slice(0, 4));
     const month = Number(birthday.slice(5, 7)) - 1;
@@ -64,7 +64,7 @@ function AgeCard({ dataLists, setDataLists, keyOfEditData, setKeyOfEditData, isS
         </thead>
         <tbody>
           {dataLists.length !== 0 &&
-            dataLists.map((dataList, i) => (
+            dataLists.map((dataList) => (
               <tr>
                 <td>{dataList.name}</td>
                 <td>{calAge(dataList.birthday)}</td>
@@ -78,21 +78,6 @@ function AgeCard({ dataLists, setDataLists, keyOfEditData, setKeyOfEditData, isS
                 </td>
               </tr>
             ))}
-          {/* <tr>
-            <td>{data.length !== 0 && data[0].key + 1}</td>
-            <td>{data.length !== 0 && data[0].name}</td>
-            <td>{data.length !== 0 && data[0].birthday.slice(0, 4)} ปี</td>
-            <td>{data.length !== 0 && data[0].birthday.slice(5, 7)}เดือน</td>
-            <td>{data.length !== 0 && data[0].birthday.slice(8, 10)}วัน</td>
-            <td>
-              <Button variant="link">
-                <AiFillEdit />
-              </Button>
-              <Button variant="link">
-                <AiFillDelete />
-              </Button>
-            </td>
-          </tr> */}
         </tbody>
       </Table>
     </div>

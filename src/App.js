@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import './App.css';
@@ -11,6 +11,23 @@ function App() {
   const [dataLists, setDataLists] = useState([]);
   const [keyOfEditData, setKeyOfEditData] = useState('');
   const [isShowEditData, setIsShowEditData] = useState(false);
+
+  useEffect(() => {
+    fetch('/data.json', {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+      .then((res) => {
+        // console.log(res);
+        return res.json();
+      })
+      .then((jsonResponse) => {
+        // console.log(jsonResponse);
+        setDataLists(jsonResponse);
+      });
+  }, []);
 
   const handleChangeName = (event) => {
     const value = event.target.value;
@@ -42,7 +59,8 @@ function App() {
     setInputName('');
   };
 
-  console.log(dataLists);
+  // console.log(dataLists);
+
   return (
     <div className="App">
       <Container>
