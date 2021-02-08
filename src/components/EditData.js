@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
-function EditData({ dataLists, setDataLists, keyOfEditData, isShowEditData, setIsShowEditData }) {
-  const Ind = dataLists.findIndex((list) => list.key === keyOfEditData);
+function EditData({ db, dataLists, setDataLists, idTarget, isShowEditData, setIsShowEditData }) {
+  const Ind = dataLists.findIndex((list) => list.dataListId === idTarget);
+  const targetById = dataLists.find((list) => list.dataListId === idTarget);
   const [editName, setEditName] = useState(dataLists[Ind].name);
   const [editBirthday, setEditBirthday] = useState(dataLists[Ind].birthday);
 
@@ -23,6 +24,18 @@ function EditData({ dataLists, setDataLists, keyOfEditData, isShowEditData, setI
     const newDataLists = [...dataLists];
     newDataLists[Ind].name = editName;
     newDataLists[Ind].birthday = editBirthday;
+
+    db.collection('dataLists')
+      .doc(targetById.dataListId)
+      .update({
+        dataListId: targetById.dataListId,
+        name: editName,
+        birthday: editBirthday,
+        key: targetById.key,
+      })
+      .then(function () {
+        console.log('Document successfully updated!');
+      });
 
     setDataLists(newDataLists);
     setIsShowEditData(!isShowEditData);

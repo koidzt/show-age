@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 
-function AgeCard({ dataLists, setDataLists, setKeyOfEditData, isShowEditData, setIsShowEditData }) {
+function AgeCard({ db, dataLists, setDataLists, setIdTarget, isShowEditData, setIsShowEditData }) {
   const calAge = (birthday) => {
     const year = Number(birthday.slice(0, 4));
     const month = Number(birthday.slice(5, 7)) - 1;
@@ -38,18 +38,29 @@ function AgeCard({ dataLists, setDataLists, setKeyOfEditData, isShowEditData, se
     if (theYear > 0) message = `${theYear} ปี`;
     if (theMonth % 12 !== 0) message = message + ` ${theMonth} เดือน`;
     if (theDate !== 0) message = message + ` ${theDate} วัน`;
+    message = message === '' ? '0 วัน' : message;
 
     return message;
   };
 
-  const handleEdit = (key) => {
+  const handleEdit = (dataListId) => {
     setIsShowEditData(!isShowEditData);
-    setKeyOfEditData(key);
+    setIdTarget(dataListId);
   };
 
-  const handleDelete = (key) => {
-    const newDataLists = dataLists.filter((list) => list.key !== key);
+  const handleDelete = (dataListId) => {
+    const newDataLists = dataLists.filter((list) => list.dataListId !== dataListId);
     setDataLists(newDataLists);
+
+    db.collection('dataLists')
+      .doc(dataListId)
+      .delete()
+      .then(function () {
+        console.log('Document successfully deleted!');
+      })
+      .catch(function (error) {
+        console.error('Error removing document: ', error);
+      });
   };
 
   return (
@@ -70,9 +81,9 @@ function AgeCard({ dataLists, setDataLists, setKeyOfEditData, isShowEditData, se
                 <td>{calAge(dataList.birthday)}</td>
                 <td>
                   <Button variant="link">
-                    <AiFillEdit onClick={() => handleEdit(dataList.key)} />
+                    <AiFillEdit onClick={() => handleEdit(dataList.dataListId)} />
                   </Button>
-                  <Button variant="link" onClick={() => handleDelete(dataList.key)}>
+                  <Button variant="link" onClick={() => handleDelete(dataList.dataListId)}>
                     <AiFillDelete />
                   </Button>
                 </td>
