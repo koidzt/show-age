@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { AiFillPlusCircle } from 'react-icons/ai';
+import { AiOutlineSend } from 'react-icons/ai';
 import './App.css';
 import AgeCard from './components/AgeCard';
 import EditData from './components/EditData';
@@ -131,8 +131,8 @@ function App() {
               />
             </Col>
             <Col xs={1} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', padding: '0' }}>
-              <Button variant="link" type="submit" style={{ padding: '0' }}>
-                <AiFillPlusCircle size={30} />
+              <Button variant="primary" type="submit" style={{ borderRadius: '50%', padding: 3 }}>
+                <AiOutlineSend size={30} />
               </Button>
             </Col>
           </Form>
