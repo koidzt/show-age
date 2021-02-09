@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { AiOutlineSend } from 'react-icons/ai';
 import './App.css';
-import AgeCard from './components/AgeCard';
-import EditData from './components/EditData';
 
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
 import firebase from 'firebase';
+import Login from './pages/Login';
+import ShowApp from './pages/ShowApp';
 
 // TODO: Replace the following with your app's Firebase project configuration
 // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
@@ -27,11 +26,10 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 function App() {
-  const [inputName, setInputName] = useState('');
-  const [inputBirthday, setInputBirthday] = useState('');
+  const [userLogin, setUserLogin] = useState(null);
+  const [users, setUsers] = useState([]);
   const [dataLists, setDataLists] = useState([]);
-  const [idTarget, setIdTarget] = useState('');
-  const [isShowEditData, setIsShowEditData] = useState(false);
+  const [datasByUser, setDatasByUser] = useState([]);
 
   useEffect(() => {
     db.collection('dataLists')
@@ -47,6 +45,7 @@ function App() {
             birthday: doc.data().birthday,
             key: doc.data().key,
             createdAt: doc.data().createdAt,
+            username: doc.data().username,
           });
           // console.log(doc.data());
         });
@@ -55,40 +54,31 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
+
+    db.collection('users')
+      .orderBy('createdAt', 'asc')
+      .get()
+      .then((data) => {
+        const getData = [];
+        // console.log(data.docs);
+        data.forEach((doc) => {
+          getData.push({
+            userId: doc.id,
+            createdAt: doc.data().createdAt,
+            username: doc.data().username,
+          });
+          // console.log(doc.data());
+        });
+        setUsers(getData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-  const handleChangeName = (event) => {
-    const value = event.target.value;
-    // console.log(value);
-    setInputName(value);
-  };
-
-  const handleChangeBirthday = (event) => {
-    const value = event.target.value;
-    // console.log(value);
-    setInputBirthday(value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (inputName === '') return alert('Name is invalidation');
-    if (
-      inputBirthday === '' ||
-      inputBirthday.split('-')[0].length !== 4 ||
-      inputBirthday.split('-')[1].length !== 2 ||
-      inputBirthday.split('-')[2].length !== 2
-    ) {
-      return alert('Birthday is invalidation');
-    }
-    const newData = { key: String(dataLists.length), name: inputName, birthday: inputBirthday, createdAt: new Date() };
-    const newDataLists = [...dataLists, newData];
-
-    db.collection('dataLists').add(newData);
-
-    alert('New list\nName : ' + inputName + '\nBirthday : ' + inputBirthday);
-    setDataLists(newDataLists);
-    setInputBirthday('');
-    setInputName('');
+  const logout = () => {
+    setUserLogin(null);
+    setDatasByUser([]);
   };
 
   // console.log(dataLists);
@@ -96,71 +86,46 @@ function App() {
   return (
     <div className="App">
       <Container>
-        <Row style={{ margin: '10px 0px' }}>
-          <Col>
+        <Row className="my-3">
+          <Col className="d-flex flex-row justify-content-center">
             <h1>Show Age</h1>
           </Col>
         </Row>
-
-        <Row style={{ margin: '10px 0px' }}>
-          <Form
-            style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', padding: '0' }}
-            onSubmit={handleSubmit}
-          >
-            <Col xs={3} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', padding: '0' }}>
-              <Form.Control type="text" value={inputName} onChange={handleChangeName} placeholder="Name" />
+        {userLogin !== null && (
+          <Row className="my-3 d-flex flex-row justify-content-end">
+            <Col xs={6} className="d-flex flex-row justify-content-center">
+              <h3 style={{ color: '#007bff' }}>{userLogin.username}</h3>
             </Col>
-            <Col xs={8} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', padding: '0' }}>
-              <label
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  margin: '0',
-                  paddingRight: '5px',
-                }}
-              >
-                Birthday
-              </label>
-              <Form.Control
-                type="date"
-                value={inputBirthday}
-                onChange={handleChangeBirthday}
-                style={{ width: '70%' }}
-              />
-            </Col>
-            <Col xs={1} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', padding: '0' }}>
-              <Button variant="primary" type="submit" style={{ borderRadius: '50%', padding: 3 }}>
-                <AiOutlineSend size={30} />
+            <Col xs={3} className="d-flex flex-row justify-content-end">
+              <Button variant="outline-secondary" size="sm" onClick={logout}>
+                Logout
               </Button>
             </Col>
-          </Form>
-        </Row>
-
-        <Row style={{ margin: '20px 0px' }}>
-          <Col style={{ padding: '0' }}>
-            {isShowEditData && (
-              <EditData
-                db={db}
-                dataLists={dataLists}
-                setDataLists={setDataLists}
-                idTarget={idTarget}
-                isShowEditData={isShowEditData}
-                setIsShowEditData={setIsShowEditData}
-              />
-            )}
-            <AgeCard
-              xs={12}
-              db={db}
-              dataLists={dataLists}
-              setDataLists={setDataLists}
-              setIdTarget={setIdTarget}
-              isShowEditData={isShowEditData}
-              setIsShowEditData={setIsShowEditData}
-            />
-          </Col>
-        </Row>
+          </Row>
+        )}
+        {/* Login */}
+        {userLogin === null && (
+          <Login
+            db={db}
+            dataLists={dataLists}
+            users={users}
+            setUsers={setUsers}
+            setUserLogin={setUserLogin}
+            setDatasByUser={setDatasByUser}
+          />
+        )}
+        {/* Add List */}
+        {userLogin !== null && (
+          <ShowApp
+            db={db}
+            dataLists={dataLists}
+            setDataLists={setDataLists}
+            userLogin={userLogin}
+            setUserLogin={setUserLogin}
+            datasByUser={datasByUser}
+            setDatasByUser={setDatasByUser}
+          />
+        )}
       </Container>
     </div>
   );
