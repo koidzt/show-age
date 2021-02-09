@@ -15,25 +15,56 @@ function Login({ db, setDataLists, setUsername }) {
     if (inputUsername === '') return alert('Please enter Username.');
     setUsername(inputUsername);
 
-    //get data from firebase
-    const snapshot = await db.collection('dataLists').where('username', '==', inputUsername).get();
-    if (snapshot.empty) {
-      console.log('No matching documents.');
-      return;
-    }
-    let getData = [];
-    snapshot.forEach((doc) => {
-      getData.push({
-        dataListId: doc.id,
-        name: doc.data().name,
-        birthday: doc.data().birthday,
-        key: doc.data().key,
-        createdAt: doc.data().createdAt,
-        username: doc.data().username,
+    // const doc = db.collection('dataLists').where('username', '==', inputUsername);
+
+    // const observer = doc.onSnapshot(
+    //   (docSnapshot) => {
+    //     console.log(`Received doc snapshot: ${docSnapshot}`);
+    //     // ...
+    //   },
+    //   (err) => {
+    //     console.log(`Encountered error: ${err}`);
+    //   }
+    // );
+
+    db.collection('dataLists')
+      .where('username', '==', inputUsername)
+      .orderBy('createdAt')
+      .onSnapshot((querySnapshot) => {
+        const snapData = [];
+        querySnapshot.forEach((doc) => {
+          snapData.push({
+            dataListId: doc.id,
+            name: doc.data().name,
+            birthday: doc.data().birthday,
+            key: doc.data().key,
+            createdAt: doc.data().createdAt,
+            username: doc.data().usernam,
+          });
+          console.log('Current data: ', doc && doc.data());
+        });
+        setDataLists(snapData);
       });
-      console.log(doc.id, '=>', doc.data());
-    });
-    setDataLists(getData);
+
+    //get data from firebase
+    // const snapshot = await db.collection('dataLists').where('username', '==', inputUsername).get();
+    // if (snapshot.empty) {
+    //   console.log('No matching documents.');
+    //   return;
+    // }
+    // let getData = [];
+    // snapshot.forEach((doc) => {
+    //   getData.push({
+    //     dataListId: doc.id,
+    //     name: doc.data().name,
+    //     birthday: doc.data().birthday,
+    //     key: doc.data().key,
+    //     createdAt: doc.data().createdAt,
+    //     username: doc.data().username,
+    //   });
+    //   console.log(doc.id, '=>', doc.data());
+    // });
+    // setDataLists(getData);
   };
 
   return (

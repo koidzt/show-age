@@ -49,8 +49,8 @@ function AgeCard({ db, dataLists, setDataLists, setIdTarget, isShowEditData, set
   };
 
   const handleDelete = (dataListId) => {
-    const newDataLists = dataLists.filter((list) => list.dataListId !== dataListId);
-    setDataLists(newDataLists);
+    // const newDataLists = dataLists.filter((list) => list.dataListId !== dataListId);
+    // setDataLists(newDataLists);
 
     db.collection('dataLists')
       .doc(dataListId)

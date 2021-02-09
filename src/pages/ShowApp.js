@@ -40,12 +40,12 @@ function ShowApp({ db, dataLists, setDataLists, username }) {
       createdAt: new Date(),
       username: username,
     };
-    const newDataLists = [...dataLists, newData];
+    // const newDataLists = [...dataLists, newData];
 
     db.collection('dataLists').add(newData);
 
     alert('New list\nName : ' + inputName + '\nBirthday : ' + inputBirthday);
-    setDataLists(newDataLists);
+    // setDataLists(newDataLists);
     setInputBirthday('');
     setInputName('');
   };

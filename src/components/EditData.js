@@ -21,9 +21,9 @@ function EditData({ db, dataLists, setDataLists, idTarget, isShowEditData, setIs
 
   const submitEdit = (event) => {
     event.preventDefault();
-    const newDataLists = [...dataLists];
-    newDataLists[Ind].name = editName;
-    newDataLists[Ind].birthday = editBirthday;
+    // const newDataLists = [...dataLists];
+    // newDataLists[Ind].name = editName;
+    // newDataLists[Ind].birthday = editBirthday;
 
     db.collection('dataLists')
       .doc(targetById.dataListId)
@@ -35,7 +35,7 @@ function EditData({ db, dataLists, setDataLists, idTarget, isShowEditData, setIs
         console.log('Document successfully updated!');
       });
 
-    setDataLists(newDataLists);
+    // setDataLists(newDataLists);
     setIsShowEditData(!isShowEditData);
   };
 
