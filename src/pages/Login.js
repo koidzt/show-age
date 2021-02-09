@@ -41,7 +41,7 @@ function Login({ db, setDataLists, setUsername }) {
             createdAt: doc.data().createdAt,
             username: doc.data().usernam,
           });
-          console.log('Current data: ', doc && doc.data());
+          // console.log('Current data: ', doc && doc.data());
         });
         setDataLists(snapData);
       });
