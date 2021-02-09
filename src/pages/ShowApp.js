@@ -4,7 +4,7 @@ import { AiOutlineSend } from 'react-icons/ai';
 import AgeCard from '../components/AgeCard';
 import EditData from '../components/EditData';
 
-function ShowApp({ db, dataLists, setDataLists, userLogin, setUserLogin, datasByUser, setDatasByUser }) {
+function ShowApp({ db, dataLists, setDataLists, username }) {
   const [inputName, setInputName] = useState('');
   const [inputBirthday, setInputBirthday] = useState('');
   const [idTarget, setIdTarget] = useState('');
@@ -38,14 +38,14 @@ function ShowApp({ db, dataLists, setDataLists, userLogin, setUserLogin, datasBy
       name: inputName,
       birthday: inputBirthday,
       createdAt: new Date(),
-      username: userLogin.username,
+      username: username,
     };
-    const newDataLists = [...datasByUser, newData];
+    const newDataLists = [...dataLists, newData];
 
     db.collection('dataLists').add(newData);
 
     alert('New list\nName : ' + inputName + '\nBirthday : ' + inputBirthday);
-    setDatasByUser(newDataLists);
+    setDataLists(newDataLists);
     setInputBirthday('');
     setInputName('');
   };
@@ -98,7 +98,6 @@ function ShowApp({ db, dataLists, setDataLists, userLogin, setUserLogin, datasBy
           <AgeCard
             xs={12}
             db={db}
-            datasByUser={datasByUser}
             dataLists={dataLists}
             setDataLists={setDataLists}
             setIdTarget={setIdTarget}

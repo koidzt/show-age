@@ -28,10 +28,8 @@ function EditData({ db, dataLists, setDataLists, idTarget, isShowEditData, setIs
     db.collection('dataLists')
       .doc(targetById.dataListId)
       .update({
-        dataListId: targetById.dataListId,
         name: editName,
         birthday: editBirthday,
-        key: targetById.key,
       })
       .then(function () {
         console.log('Document successfully updated!');

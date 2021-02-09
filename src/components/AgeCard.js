@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 
-function AgeCard({ db, dataLists, setDataLists, setIdTarget, isShowEditData, setIsShowEditData, datasByUser }) {
+function AgeCard({ db, dataLists, setDataLists, setIdTarget, isShowEditData, setIsShowEditData }) {
   const calAge = (birthday) => {
     const year = Number(birthday.slice(0, 4));
     const month = Number(birthday.slice(5, 7)) - 1;
@@ -74,22 +74,7 @@ function AgeCard({ db, dataLists, setDataLists, setIdTarget, isShowEditData, set
           </tr>
         </thead>
         <tbody>
-          {datasByUser.length !== 0 &&
-            datasByUser.map((dataList) => (
-              <tr>
-                <td>{dataList.name}</td>
-                <td>{calAge(dataList.birthday)}</td>
-                <td>
-                  <Button variant="link">
-                    <AiFillEdit onClick={() => handleEdit(dataList.dataListId)} />
-                  </Button>
-                  <Button variant="link" onClick={() => handleDelete(dataList.dataListId)}>
-                    <AiFillDelete />
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          {/* {dataLists.length !== 0 &&
+          {dataLists.length !== 0 &&
             dataLists.map((dataList) => (
               <tr>
                 <td>{dataList.name}</td>
@@ -103,7 +88,7 @@ function AgeCard({ db, dataLists, setDataLists, setIdTarget, isShowEditData, set
                   </Button>
                 </td>
               </tr>
-            ))} */}
+            ))}
         </tbody>
       </Table>
     </div>
