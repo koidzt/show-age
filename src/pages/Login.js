@@ -15,18 +15,6 @@ function Login({ db, setDataLists, setUsername }) {
     if (inputUsername === '') return alert('Please enter Username.');
     setUsername(inputUsername);
 
-    // const doc = db.collection('dataLists').where('username', '==', inputUsername);
-
-    // const observer = doc.onSnapshot(
-    //   (docSnapshot) => {
-    //     console.log(`Received doc snapshot: ${docSnapshot}`);
-    //     // ...
-    //   },
-    //   (err) => {
-    //     console.log(`Encountered error: ${err}`);
-    //   }
-    // );
-
     db.collection('dataLists')
       .where('username', '==', inputUsername)
       .orderBy('createdAt')
