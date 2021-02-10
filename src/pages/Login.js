@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 
-function Login({ db, setDataLists, setUsername }) {
+function Login({ db, setUnsub, setDataLists, setUsername }) {
   const [inputUsername, setInputUsername] = useState('');
 
   const handleChangeUsername = (event) => {
@@ -15,7 +15,8 @@ function Login({ db, setDataLists, setUsername }) {
     if (inputUsername === '') return alert('Please enter Username.');
     setUsername(inputUsername);
 
-    db.collection('dataLists')
+    const unsubscribe = await db
+      .collection('dataLists')
       .where('username', '==', inputUsername)
       .orderBy('createdAt')
       .onSnapshot((querySnapshot) => {
@@ -27,12 +28,14 @@ function Login({ db, setDataLists, setUsername }) {
             birthday: doc.data().birthday,
             key: doc.data().key,
             createdAt: doc.data().createdAt,
-            username: doc.data().usernam,
+            username: doc.data().username,
           });
           // console.log('Current data: ', doc && doc.data());
         });
         setDataLists(snapData);
       });
+
+    setUnsub(unsubscribe);
 
     //get data from firebase
     // const snapshot = await db.collection('dataLists').where('username', '==', inputUsername).get();
