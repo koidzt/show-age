@@ -76,7 +76,7 @@ function AgeCard({ db, dataLists, setDataLists, setIdTarget, isShowEditData, set
         <tbody>
           {dataLists.length !== 0 &&
             dataLists.map((dataList) => (
-              <tr>
+              <tr key={dataList.key}>
                 <td>{dataList.name}</td>
                 <td>{calAge(dataList.birthday)}</td>
                 <td>

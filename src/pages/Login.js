@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 
-function Login({ db, setUnsub, setDataLists, setUsername }) {
+function Login({ setUsername }) {
   const [inputUsername, setInputUsername] = useState('');
 
   const handleChangeUsername = (event) => {
@@ -10,32 +10,31 @@ function Login({ db, setUnsub, setDataLists, setUsername }) {
     setInputUsername(value);
   };
 
-  const handleLogin = async (event) => {
+  const handleLogin = (event) => {
     event.preventDefault();
     if (inputUsername === '') return alert('Please enter Username.');
     setUsername(inputUsername);
 
-    const unsubscribe = await db
-      .collection('dataLists')
-      .where('username', '==', inputUsername)
-      .orderBy('createdAt')
-      .onSnapshot((querySnapshot) => {
-        const snapData = [];
-        querySnapshot.forEach((doc) => {
-          snapData.push({
-            dataListId: doc.id,
-            name: doc.data().name,
-            birthday: doc.data().birthday,
-            key: doc.data().key,
-            createdAt: doc.data().createdAt,
-            username: doc.data().username,
-          });
-          // console.log('Current data: ', doc && doc.data());
-        });
-        setDataLists(snapData);
-      });
-
-    setUnsub(unsubscribe);
+    // const unsubscribe = await db
+    //   .collection('dataLists')
+    //   .where('username', '==', inputUsername)
+    //   .orderBy('createdAt')
+    //   .onSnapshot((querySnapshot) => {
+    //     const snapData = [];
+    //     querySnapshot.forEach((doc) => {
+    //       snapData.push({
+    //         dataListId: doc.id,
+    //         name: doc.data().name,
+    //         birthday: doc.data().birthday,
+    //         key: doc.data().key,
+    //         createdAt: doc.data().createdAt,
+    //         username: doc.data().username,
+    //       });
+    //       // console.log('Current data: ', doc && doc.data());
+    //     });
+    //     setDataLists(snapData);
+    //   });
+    // setUnsub(unsubscribe);
 
     //get data from firebase
     // const snapshot = await db.collection('dataLists').where('username', '==', inputUsername).get();
