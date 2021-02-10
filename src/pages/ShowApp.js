@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { AiOutlineSend } from 'react-icons/ai';
 import AgeCard from '../components/AgeCard';
@@ -9,31 +9,6 @@ function ShowApp({ db, dataLists, setDataLists, username }) {
   const [inputBirthday, setInputBirthday] = useState('');
   const [idTarget, setIdTarget] = useState('');
   const [isShowEditData, setIsShowEditData] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = db
-      .collection('dataLists')
-      .where('username', '==', username)
-      .orderBy('createdAt')
-      .onSnapshot((querySnapshot) => {
-        const snapData = [];
-        querySnapshot.forEach((doc) => {
-          snapData.push({
-            dataListId: doc.id,
-            name: doc.data().name,
-            birthday: doc.data().birthday,
-            key: doc.data().key,
-            createdAt: doc.data().createdAt,
-            username: doc.data().username,
-          });
-          // console.log('Current data: ', doc && doc.data());
-        });
-        setDataLists(snapData);
-      });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   const handleChangeName = (event) => {
     const value = event.target.value;
