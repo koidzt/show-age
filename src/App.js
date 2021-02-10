@@ -28,13 +28,15 @@ const db = firebase.firestore();
 function App() {
   const [username, setUsername] = useState(null);
   const [dataLists, setDataLists] = useState([]);
+  const [unsub, setUnsub] = useState(null);
 
   const clearUser = () => {
+    unsub();
     setUsername(null);
-    // setDataLists([]);
+    setDataLists([]);
   };
 
-  console.log(dataLists);
+  // console.log(dataLists);
 
   return (
     <div className="App">
@@ -57,7 +59,9 @@ function App() {
           </Row>
         )}
         {/* Login */}
-        {username === null && <Login db={db} setUsername={setUsername} />}
+        {username === null && (
+          <Login db={db} setUnsub={setUnsub} setDataLists={setDataLists} setUsername={setUsername} />
+        )}
         {/* Add List */}
         {username !== null && <ShowApp db={db} dataLists={dataLists} setDataLists={setDataLists} username={username} />}
       </Container>
