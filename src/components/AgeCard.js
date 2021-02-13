@@ -27,8 +27,8 @@ function AgeCard({ db, dataLists, setDataLists, setIdTarget, isShowEditData, set
       days = 31;
 
     if (lastMonth === 3 || lastMonth === 5 || lastMonth === 8 || lastMonth === 10) days = 30;
-    if (lastMonth === 1 && curYear % 4 === 0) days = 28;
-    if (lastMonth === 1 && curYear % 4 !== 0) days = 29;
+    if (lastMonth === 1 && curYear % 4 !== 0) days = 28;
+    if (lastMonth === 1 && curYear % 4 === 0) days = 29;
 
     let theDate = (curDate - date + days) % days;
     let theMonth = date > curDate ? (11 + (curMonth - month)) % 12 : (12 + (curMonth - month)) % 12;
